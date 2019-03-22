@@ -59,4 +59,4 @@ print(one_hot_results)
 
 word_index = tokenizer.word_index
 
-print(word_index)
+print(len(word_index))
