@@ -4,6 +4,8 @@ from keras import models
 from keras import layers
 from keras import optimizers
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 (train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)
@@ -18,6 +20,8 @@ def vectorize_sequences(sequences, dimension=10000):
     for i, sequences in enumerate(sequences):
         results[i, sequences] = 1
     return results
+
+#  在将得来的评论序列转换为二进制向量的话，会丢失原来的顺序关系。
 
 x_train = vectorize_sequences(train_data)
 x_test = vectorize_sequences(test_data)
@@ -41,7 +45,7 @@ partial_y_train = y_train[10000:]
 model.compile(optimizer='rmsprop',loss='binary_crossentropy',
                 metrics=['acc'])
 
-history = model.fit_generator(partial_x_train,
+history = model.fit(partial_x_train,
                               partial_y_train,
                               epochs=20,
                               batch_size=512,
@@ -62,16 +66,17 @@ plt.ylabel('Loss')
 plt.legend()
 
 plt.show()
+plt.savefig('./test.jpg')
 
-plt.clf()
-acc = history_dict['acc']
-val_acc = history_dict['val_acc']
+# plt.clf()
+# acc = history_dict['acc']
+# val_acc = history_dict['val_acc']
 
-plt.plot(epochs, acc, 'bo', label='Training acc')
-plt.plot(epochs, val_acc, 'b', label='Validationg acc')
-plt.title('Training and validation accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
+# plt.plot(epochs, acc, 'bo', label='Training acc')
+# plt.plot(epochs, val_acc, 'b', label='Validationg acc')
+# plt.title('Training and validation accuracy')
+# plt.xlabel('Epochs')
+# plt.ylabel('Accuracy')
+# plt.legend()
 
-plt.show()
+# plt.show()
